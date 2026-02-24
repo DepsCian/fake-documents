@@ -1,20 +1,17 @@
 local ffi = require("ffi")
 local Vip = require("documents/vip/init")
 local Encoding = require("core/encoding")
+local VIP_TYPES = require("documents/vip/constants")
 
 local Builder = {}
 
+local vip_type_map = {}
+for _, vip in ipairs(VIP_TYPES) do
+    vip_type_map[vip.name] = vip.type
+end
+
 function Builder.build()
     local s = Vip.state
-    
-
-    
-    local vip_type_map = {
-        ["ADD VIP"] = "add",
-        ["Premium VIP"] = "premium",
-        ["Titan VIP"] = "titan",
-        ["Diamond VIP"] = "diamond"
-    }
     
     local json = '{"type":64,"not":false,"header_block":{'
     if s.statusName.enabled[0] then 

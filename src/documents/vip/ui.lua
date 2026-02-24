@@ -4,6 +4,7 @@ local Encoding = require("core/encoding")
 local Vip = require("documents/vip/init")
 local Save = require("documents/save")
 local Helpers = require("ui/helpers")
+local VIP_TYPES = require("documents/vip/constants")
 local u8 = Encoding.u8
 
 local LABELS = {
@@ -11,12 +12,7 @@ local LABELS = {
     { key = "addVipDays", label = u8"ADD VIP (дни)" },
 }
 
-local VIP_TYPES = {
-    { name = "ADD VIP", value = u8"ADD VIP" },
-    { name = "Premium VIP", value = u8"Premium VIP" },
-    { name = "Titan VIP", value = u8"Titan VIP" },
-    { name = "Diamond VIP", value = u8"Diamond VIP" },
-}
+
 
 local VipUI = {}
 
@@ -31,11 +27,11 @@ function VipUI.render()
     imgui.Text(u8"Ваш текущий статус:")
     local current_status = ffi.string(s.statusName.value)
     for _, vip in ipairs(VIP_TYPES) do
-        local is_selected = current_status == ffi.string(vip.value)
+        local is_selected = current_status == vip.name
         local checkbox_state = imgui.new.bool(is_selected)
         if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
             if not is_selected then
-                ffi.copy(s.statusName.value, vip.value)
+                ffi.copy(s.statusName.value, vip.display)
                 Save.execute()
             end
         end
