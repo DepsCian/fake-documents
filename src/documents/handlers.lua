@@ -1,5 +1,4 @@
 local acef = require("arizona-events")
-local acef = require("arizona-events")
 local State = require("documents/state")
 local Passport = require("documents/passport/init")
 local Licenses = require("documents/licenses/init")
@@ -21,13 +20,13 @@ local CLOSE_EVENT = "onActiveViewChanged|null"
 local UPDATE_PAGE = "window.executeEvent('event.documents.updatePage', `[%d]`);"
 
 local DOCUMENT_TYPES = {
-    { type = 1,  state = Passport.state,  builder = PassportBuilder },
-    { type = 2,  state = Licenses.state,  builder = LicensesBuilder },
-    { type = 4,  state = Medical.state,   builder = MedicalBuilder },
-    { type = 8,  state = Military.state,  builder = MilitaryBuilder },
-    { type = 16, state = Property.state,  builder = PropertyBuilder },
-    { type = 32, state = Vehicle.state,   builder = VehicleBuilder },
-    { type = 64, state = Vip.state,       builder = VipBuilder },
+    { type = 1,  module = Passport,  builder = PassportBuilder },
+    { type = 2,  module = Licenses,  builder = LicensesBuilder },
+    { type = 4,  module = Medical,   builder = MedicalBuilder },
+    { type = 8,  module = Military,  builder = MilitaryBuilder },
+    { type = 16, module = Property,  builder = PropertyBuilder },
+    { type = 32, module = Vehicle,   builder = VehicleBuilder },
+    { type = 64, module = Vip,       builder = VipBuilder },
 }
 
 local function _getPlayerNickname()
@@ -54,7 +53,7 @@ function acef.onArizonaDisplay(packet)
 
     for _, doc in ipairs(DOCUMENT_TYPES) do
         if packet.text:find('"type":' .. doc.type, 1, true) or packet.text == UPDATE_PAGE:format(doc.type) then
-            _tryApply(doc.state, doc.builder)
+            _tryApply(doc.module.state, doc.builder)
             break
         end
     end
