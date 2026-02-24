@@ -39,25 +39,27 @@ function VipUI.render()
     Helpers.renderFieldTable(LABELS, s)
 
     imgui.Separator()
-    imgui.Text(u8"Premium уровни:")
-    for i = 1, 10 do
-        local lvl = s.premiumLevels[i]
-        if imgui.Checkbox(u8("Уровень " .. i), lvl.enabled) then Save.execute() end
-        imgui.SameLine()
-        if imgui.Checkbox(u8("##mark" .. i), lvl.mark) then Save.execute() end
-        if lvl.enabled[0] then
-            imgui.InputText(u8("##text" .. i), lvl.text.value, 256)
-            imgui.InputText(u8("##desc" .. i), lvl.desc.value, 512)
+    if imgui.CollapsingHeader(u8"Premium уровни") then
+        for i = 1, 10 do
+            local lvl = s.premiumLevels[i]
+            if imgui.Checkbox(u8("Уровень " .. i), lvl.enabled) then Save.execute() end
+            imgui.SameLine()
+            if imgui.Checkbox(u8("Отмечен##mark" .. i), lvl.mark) then Save.execute() end
+            if lvl.enabled[0] then
+                imgui.InputText(u8("##text" .. i), lvl.text.value, 256)
+                imgui.InputText(u8("##desc" .. i), lvl.desc.value, 512)
+            end
         end
     end
 
     imgui.Separator()
-    imgui.Text(u8"VIP статусы:")
-    for i = 1, 4 do
-        local st = s.vipStatuses[i]
-        if imgui.Checkbox(u8(VIP_TYPES[i].name), st.enabled) then Save.execute() end
-        if st.enabled[0] then
-            imgui.InputText(u8("##vipdate" .. i), st.date.value, 128)
+    if imgui.CollapsingHeader(u8"VIP статусы") then
+        for i = 1, 4 do
+            local st = s.vipStatuses[i]
+            if imgui.Checkbox(u8(VIP_TYPES[i].name), st.enabled) then Save.execute() end
+            if st.enabled[0] then
+                imgui.InputText(u8("##vipdate" .. i), st.date.value, 128)
+            end
         end
     end
 end
