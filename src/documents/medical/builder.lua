@@ -1,10 +1,16 @@
 local ffi = require("ffi")
 local Medical = require("documents/medical/init")
-local Encoding = require("core/encoding")
+local JsonBuilder = require("core/json_builder")
 
 local Builder = {}
 
-local PHOTO_SEL = ".documents-medical__photo"
+local FIELD_MAP = {
+    { stateKey = "name",        jsonKey = "name" },
+    { stateKey = "ukrop",       jsonKey = "zavisimost" },
+    { stateKey = "health",      jsonKey = "state" },
+    { stateKey = "insurance",   jsonKey = "health_insurance" },
+    { stateKey = "validity",    jsonKey = "med_card_time" },
+}
 
 function Builder.build()
     local s = Medical.state
@@ -13,24 +19,21 @@ function Builder.build()
         return 'window.executeEvent("event.documents.inititalizeData",`{"type":4,"not":true}`);'
     end
 
-    local json = '{"type":4,"not":false'
-    if s.name.enabled[0] then json = json .. ',"name":"' .. Encoding.escape(ffi.string(s.name.value)) .. '"' end
-    if s.ukrop.enabled[0] then json = json .. ',"zavisimost":"' .. Encoding.escape(ffi.string(s.ukrop.value)) .. '"' end
-    if s.health.enabled[0] then json = json .. ',"state":"' .. Encoding.escape(ffi.string(s.health.value)) .. '"' end
-    if s.insurance.enabled[0] then json = json .. ',"health_insurance":"' .. Encoding.escape(ffi.string(s.insurance.value)) .. '"' end
-    if s.validity.enabled[0] then json = json .. ',"med_card_time":"' .. Encoding.escape(ffi.string(s.validity.value)) .. '"' end
-    if s.psychiatric.enabled[0] then json = json .. ',"demorgan":{"count":"' .. Encoding.escape(ffi.string(s.psychiatric.value)) .. '"}' end
-    if s.examProgress[0] then json = json .. ',"med_osmotr_progress":10' end
-    json = json .. '}'
-
-    local code = 'window.executeEvent("event.documents.inititalizeData",`' .. json .. '`);'
-
-    if s.avatarUrl.enabled[0] then
-        local avatarUrl = ffi.string(s.avatarUrl.value)
-        code = code .. 'setTimeout(()=>{const a=document.querySelector("' .. PHOTO_SEL .. '");if(a){a.src="' .. avatarUrl .. '";a.style.height="100%";}},100);'
+    local json = '{"type":4,"not":false' .. JsonBuilder.buildFields(s, FIELD_MAP)
+    
+    if s.psychiatric.enabled[0] then
+        local value = require("core/encoding").escape(ffi.string(s.psychiatric.value))
+        json = json .. ',"demorgan":{"count":"' .. value .. '"}'
     end
-
-    return code
+    
+    if s.examProgress[0] then
+        json = json .. ',"med_osmotr_progress":10'
+    end
+    
+    json = json .. '}'
+    local code = 'window.executeEvent("event.documents.inititalizeData",`' .. json .. '`);'
+    
+    return code .. JsonBuilder.avatarSnippet(s, ".documents-medical__photo")
 end
 
 return Builder
