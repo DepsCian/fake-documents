@@ -42,7 +42,6 @@ end
 local DEFAULTS = _buildDefaults()
 
 local Vehicle = {}
-Vehicle.VEHICLE_FIELDS = VEHICLE_FIELDS
 Vehicle.DEFAULTS = DEFAULTS
 Vehicle.MAX_VEHICLES = MAX_VEHICLES
 Vehicle.state = nil

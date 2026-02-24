@@ -27,7 +27,6 @@ local DEFAULTS = {
 }
 
 local Property = {}
-Property.FIELDS = PROPERTY_FIELDS
 Property.DEFAULTS = DEFAULTS
 Property.state = nil
 
