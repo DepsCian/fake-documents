@@ -5,7 +5,8 @@
     "core/config": "src/core/config.lua",
     "core/encoding": "src/core/encoding.lua",
     "core/message": "src/core/message.lua",
-    "core/js": "src/core/js.lua",
+    "core/document_factory": "src/core/document_factory.lua",
+    "core/json_builder": "src/core/json_builder.lua",
     "documents/state": "src/documents/state.lua",
     "documents/save": "src/documents/save.lua",
     "documents/handlers": "src/documents/handlers.lua",
@@ -30,6 +31,7 @@
     "documents/vip/init": "src/documents/vip/init.lua",
     "documents/vip/builder": "src/documents/vip/builder.lua",
     "documents/vip/ui": "src/documents/vip/ui.lua",
+    "documents/vip/constants": "src/documents/vip/constants.lua",
     "ui/init": "src/ui/init.lua",
     "ui/helpers": "src/ui/helpers.lua"
   },
