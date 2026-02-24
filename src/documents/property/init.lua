@@ -3,10 +3,6 @@ local ffi = require("ffi")
 local Encoding = require("core/encoding")
 local u8 = Encoding.u8
 
-local PROPERTY_FIELDS = {
-    { key = "name", bufSize = 256 },
-}
-
 local DEFAULTS = {
     enabled = false,
     onlyOwn = true,

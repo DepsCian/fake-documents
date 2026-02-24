@@ -1,5 +1,5 @@
 local acef = require("arizona-events")
-local JS = require("core/js")
+local acef = require("arizona-events")
 local State = require("documents/state")
 local Passport = require("documents/passport/init")
 local Licenses = require("documents/licenses/init")
@@ -21,13 +21,13 @@ local CLOSE_EVENT = "onActiveViewChanged|null"
 local UPDATE_PAGE = "window.executeEvent('event.documents.updatePage', `[%d]`);"
 
 local DOCUMENT_TYPES = {
-    { type = 1,  page = 1,  state = Passport.state,  builder = PassportBuilder },
-    { type = 2,  page = 2,  state = Licenses.state,  builder = LicensesBuilder },
-    { type = 4,  page = 4,  state = Medical.state,   builder = MedicalBuilder },
-    { type = 8,  page = 8,  state = Military.state,  builder = MilitaryBuilder },
-    { type = 16, page = 16, state = Property.state,  builder = PropertyBuilder },
-    { type = 32, page = 32, state = Vehicle.state,   builder = VehicleBuilder },
-    { type = 64, page = 64, state = Vip.state,       builder = VipBuilder },
+    { type = 1,  state = Passport.state,  builder = PassportBuilder },
+    { type = 2,  state = Licenses.state,  builder = LicensesBuilder },
+    { type = 4,  state = Medical.state,   builder = MedicalBuilder },
+    { type = 8,  state = Military.state,  builder = MilitaryBuilder },
+    { type = 16, state = Property.state,  builder = PropertyBuilder },
+    { type = 32, state = Vehicle.state,   builder = VehicleBuilder },
+    { type = 64, state = Vip.state,       builder = VipBuilder },
 }
 
 local function _getPlayerNickname()
@@ -43,7 +43,7 @@ end
 
 local function _tryApply(docState, builder)
     if _shouldApply(docState) then
-        JS.eval(builder.build())
+        acef.eval(builder.build())
     end
 end
 
@@ -53,7 +53,7 @@ function acef.onArizonaDisplay(packet)
     end
 
     for _, doc in ipairs(DOCUMENT_TYPES) do
-        if packet.text:find('"type":' .. doc.type, 1, true) or packet.text == UPDATE_PAGE:format(doc.page) then
+        if packet.text:find('"type":' .. doc.type, 1, true) or packet.text == UPDATE_PAGE:format(doc.type) then
             _tryApply(doc.state, doc.builder)
             break
         end
