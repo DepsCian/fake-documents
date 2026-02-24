@@ -1,0 +1,26 @@
+{
+  "main": "src/init.lua",
+  "out": "/home/deps/.local/share/Arizona-Catalyst/game/moonloader/fake-documents.lua",
+  "modules": {
+    "core/config": "src/core/config.lua",
+    "core/encoding": "src/core/encoding.lua",
+    "core/message": "src/core/message.lua",
+    "core/js": "src/core/js.lua",
+    "documents/state": "src/documents/state.lua",
+    "documents/save": "src/documents/save.lua",
+    "documents/handlers": "src/documents/handlers.lua",
+    "documents/passport/init": "src/documents/passport/init.lua",
+    "documents/passport/builder": "src/documents/passport/builder.lua",
+    "documents/passport/ui": "src/documents/passport/ui.lua",
+    "documents/licenses/init": "src/documents/licenses/init.lua",
+    "documents/licenses/builder": "src/documents/licenses/builder.lua",
+    "documents/licenses/ui": "src/documents/licenses/ui.lua",
+    "documents/medical/init": "src/documents/medical/init.lua",
+    "documents/medical/builder": "src/documents/medical/builder.lua",
+    "documents/medical/ui": "src/documents/medical/ui.lua",
+    "ui/init": "src/ui/init.lua",
+    "ui/helpers": "src/ui/helpers.lua"
+  },
+  "watcher_delay": 250,
+  "remove_comments": true
+}

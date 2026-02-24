@@ -1,0 +1,45 @@
+local imgui = require("mimgui")
+local ffi = require("ffi")
+local Encoding = require("core/encoding")
+local Licenses = require("documents/licenses/init")
+local Save = require("documents/save")
+local u8 = Encoding.u8
+
+local LicensesUI = {}
+
+function LicensesUI.render()
+    local s = Licenses.state
+
+    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
+    imgui.SameLine()
+    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
+    imgui.Separator()
+
+    imgui.Columns(3)
+    imgui.Text(u8"Название")
+    imgui.NextColumn()
+    imgui.Text(u8"Активна")
+    imgui.NextColumn()
+    imgui.Text(u8"Срок действия")
+    imgui.NextColumn()
+    imgui.Separator()
+
+    for i, item in ipairs(s.items) do
+        imgui.Text(item.name)
+        imgui.NextColumn()
+
+        if imgui.Checkbox("##lic_" .. i, item.enabled) then
+            Save.execute()
+        end
+        imgui.NextColumn()
+
+        imgui.PushItemWidth(imgui.GetColumnWidth() - 10)
+        imgui.InputText("##lic_date_" .. i, item.date, ffi.sizeof(item.date))
+        imgui.PopItemWidth()
+        imgui.NextColumn()
+    end
+
+    imgui.Columns(1)
+end
+
+return LicensesUI
