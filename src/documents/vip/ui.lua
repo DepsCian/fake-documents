@@ -27,9 +27,8 @@ function VipUI.render()
     imgui.Text(u8"Ваш текущий статус:")
     local current_status = ffi.string(s.statusName.value)
     for _, vip in ipairs(VIP_TYPES) do
-        local is_selected = current_status == vip.name
-        local checkbox_state = imgui.new.bool(is_selected)
-        if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
+        local is_selected = current_status == vip.display
+        if imgui.RadioButton(u8(vip.name .. "##viptype"), is_selected) then
             if not is_selected then
                 ffi.copy(s.statusName.value, vip.display)
                 Save.execute()
