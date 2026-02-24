@@ -3,6 +3,7 @@ local ffi = require("ffi")
 local Encoding = require("core/encoding")
 local Property = require("documents/property/init")
 local Save = require("documents/save")
+local Helpers = require("ui/helpers")
 local u8 = Encoding.u8
 
 local PropertyUI = {}
@@ -29,10 +30,7 @@ end
 function PropertyUI.render()
     local s = Property.state
 
-    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
-    imgui.SameLine()
-    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
-    imgui.Separator()
+    Helpers.renderDocumentHeader(s)
 
     if imgui.CollapsingHeader(u8"Жилая недвижимость") then
         _renderSlots(s.residential, "res")

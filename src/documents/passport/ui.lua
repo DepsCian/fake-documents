@@ -28,11 +28,7 @@ local PassportUI = {}
 function PassportUI.render()
     local s = Passport.state
 
-    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
-    imgui.SameLine()
-    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
-    if imgui.Checkbox(u8"Показать 'нет паспорта'", s.showEmptyState) then Save.execute() end
-    imgui.Separator()
+    Helpers.renderDocumentHeader(s, u8"Показать 'нет паспорта'")
 
     Helpers.renderFieldTable(LABELS, s)
 end

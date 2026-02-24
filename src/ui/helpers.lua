@@ -1,9 +1,21 @@
 local imgui = require("mimgui")
 local ffi = require("ffi")
 local Encoding = require("core/encoding")
+local Save = require("documents/save")
 local u8 = Encoding.u8
 
 local Helpers = {}
+
+function Helpers.renderDocumentHeader(state, emptyStateLabel)
+    if imgui.Checkbox(u8"Включено", state.enabled) then Save.execute() end
+    imgui.SameLine()
+    if imgui.Checkbox(u8"Не менять чужие документы", state.onlyOwn) then Save.execute() end
+    if emptyStateLabel and state.showEmptyState then
+        imgui.SameLine()
+        if imgui.Checkbox(emptyStateLabel, state.showEmptyState) then Save.execute() end
+    end
+    imgui.Separator()
+end
 
 function Helpers.renderRow(label, id, setting)
     imgui.Text(label)

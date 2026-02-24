@@ -3,6 +3,7 @@ local ffi = require("ffi")
 local Encoding = require("core/encoding")
 local Licenses = require("documents/licenses/init")
 local Save = require("documents/save")
+local Helpers = require("ui/helpers")
 local u8 = Encoding.u8
 
 local LicensesUI = {}
@@ -10,10 +11,7 @@ local LicensesUI = {}
 function LicensesUI.render()
     local s = Licenses.state
 
-    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
-    imgui.SameLine()
-    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
-    imgui.Separator()
+    Helpers.renderDocumentHeader(s)
 
     imgui.Columns(3)
     imgui.Text(u8"Название")

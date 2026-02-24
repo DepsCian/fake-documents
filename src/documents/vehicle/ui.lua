@@ -23,10 +23,7 @@ local VehicleUI = {}
 function VehicleUI.render()
     local s = Vehicle.state
 
-    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
-    imgui.SameLine()
-    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
-    imgui.Separator()
+    Helpers.renderDocumentHeader(s)
 
     for i = 1, Vehicle.MAX_VEHICLES do
         if imgui.CollapsingHeader(HEADERS[i]) then

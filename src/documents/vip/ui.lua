@@ -19,16 +19,14 @@ local VipUI = {}
 function VipUI.render()
     local s = Vip.state
 
-    if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
-    imgui.SameLine()
-    if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
-    imgui.Separator()
+    Helpers.renderDocumentHeader(s)
 
     imgui.Text(u8"Ваш текущий статус:")
     local current_status = ffi.string(s.statusName.value)
     for _, vip in ipairs(VIP_TYPES) do
-        local is_selected = current_status == vip.display
-        if imgui.RadioButton(u8(vip.name .. "##viptype"), is_selected) then
+        local is_selected = current_status == vip.name
+        local checkbox_state = imgui.new.bool(is_selected)
+        if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
             if not is_selected then
                 ffi.copy(s.statusName.value, vip.display)
                 Save.execute()
