@@ -42,8 +42,8 @@ function Builder.build()
             .. 'const p=document.querySelectorAll(".documents-medical__progress-counter-item");'
             .. 'p.forEach(i=>{i.style.backgroundColor="#4CAF50"});'
             .. 'document.querySelector(".documents-medical__tip-text").textContent='
-            .. '"\u041c\u0435\u0434\u0438\u0446\u0438\u043d\u0441\u043a\u0438\u0439 \u043e\u0441\u043c\u043e\u0442\u0440 '
-            .. '\u043f\u043e\u043b\u043d\u043e\u0441\u0442\u044c\u044e \u043f\u0440\u043e\u0439\u0434\u0435\u043d";'
+            .. '"\\u041c\\u0435\\u0434\\u0438\\u0446\\u0438\\u043d\\u0441\\u043a\\u0438\\u0439 \\u043e\\u0441\\u043c\\u043e\\u0442\\u0440 '
+            .. '\\u043f\\u043e\\u043b\\u043d\\u043e\\u0441\\u0442\\u044c\\u044e \\u043f\\u0440\\u043e\\u0439\\u0434\\u0435\\u043d";'
     end
 
     return code

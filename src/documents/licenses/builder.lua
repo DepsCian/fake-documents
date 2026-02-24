@@ -50,7 +50,28 @@ l.forEach(c=>{
             e.classList.add("documents-license__license-duration--disabled");
         }
     }
-});]]
+});
+const d=document.querySelector(".documents-license__diplomacy");
+if(d&&s.diplomacy){
+    const di=d.querySelector(".documents-license__diplomacy-icon");
+    const dn=d.querySelector(".documents-license__diplomacy-name");
+    const dd=d.querySelector(".documents-license__diplomacy-duration");
+    if(s.diplomacy.enabled){
+        if(di)di.classList.remove("documents-license__diplomacy-icon--disabled");
+        if(dn)dn.classList.remove("documents-license__diplomacy-name--disabled");
+        if(dd){
+            dd.textContent="\u0414\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 \u0434\u043e: "+s.diplomacy.date;
+            dd.classList.remove("documents-license__diplomacy-duration--disabled");
+        }
+    }else{
+        if(di)di.classList.add("documents-license__diplomacy-icon--disabled");
+        if(dn)dn.classList.add("documents-license__diplomacy-name--disabled");
+        if(dd){
+            dd.textContent="\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442";
+            dd.classList.add("documents-license__diplomacy-duration--disabled");
+        }
+    }
+}]]
 end
 
 return Builder
