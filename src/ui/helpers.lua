@@ -38,6 +38,20 @@ end
 function Helpers.renderFieldTable(labels, state)
     local disabled = state.enabled and not state.enabled[0]
     
+    if imgui.Button(u8"Включить все") then
+        for _, item in ipairs(labels) do
+            if state[item.key] then state[item.key].enabled[0] = true end
+        end
+        Save.execute()
+    end
+    imgui.SameLine()
+    if imgui.Button(u8"Выключить все") then
+        for _, item in ipairs(labels) do
+            if state[item.key] then state[item.key].enabled[0] = false end
+        end
+        Save.execute()
+    end
+    
     imgui.Columns(3)
     imgui.Text(u8"Параметр")
     imgui.NextColumn()
