@@ -28,7 +28,7 @@ local PassportUI = {}
 function PassportUI.render()
     local s = Passport.state
 
-    Helpers.renderDocumentHeader(s, u8"Показать 'нет паспорта'")
+    Helpers.renderDocumentHeader(s, u8"Показать 'нет паспорта'", Passport)
 
     Helpers.renderFieldTable(LABELS, s)
 end

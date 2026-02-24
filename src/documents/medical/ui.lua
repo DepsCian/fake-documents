@@ -20,7 +20,7 @@ local MedicalUI = {}
 function MedicalUI.render()
     local s = Medical.state
 
-    Helpers.renderDocumentHeader(s, u8"Показать 'нет мед.карты'")
+    Helpers.renderDocumentHeader(s, u8"Показать 'нет мед.карты'", Medical)
 
     Helpers.renderFieldTable(LABELS, s)
 

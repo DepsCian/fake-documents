@@ -11,7 +11,7 @@ local LicensesUI = {}
 function LicensesUI.render()
     local s = Licenses.state
 
-    Helpers.renderDocumentHeader(s)
+    Helpers.renderDocumentHeader(s, nil, Licenses)
 
     imgui.Columns(3)
     imgui.Text(u8"Название")

@@ -6,13 +6,24 @@ local u8 = Encoding.u8
 
 local Helpers = {}
 
-function Helpers.renderDocumentHeader(state, emptyStateLabel)
+function Helpers.renderDocumentHeader(state, emptyStateLabel, module)
     if imgui.Checkbox(u8"Включено", state.enabled) then Save.execute() end
     imgui.SameLine()
     if imgui.Checkbox(u8"Не менять чужие документы", state.onlyOwn) then Save.execute() end
     if emptyStateLabel and state.showEmptyState then
         imgui.SameLine()
         if imgui.Checkbox(emptyStateLabel, state.showEmptyState) then Save.execute() end
+    end
+    if module and module.DEFAULTS then
+        imgui.SameLine()
+        if imgui.Button(u8"Сбросить") then
+            local cfg = require("core/config").data()
+            for key, value in pairs(module.DEFAULTS) do
+                cfg[key] = value
+            end
+            module.createState(cfg)
+            Save.execute()
+        end
     end
     imgui.Separator()
 end

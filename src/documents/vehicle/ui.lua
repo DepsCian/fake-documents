@@ -24,7 +24,7 @@ local VehicleUI = {}
 function VehicleUI.render()
     local s = Vehicle.state
 
-    Helpers.renderDocumentHeader(s)
+    Helpers.renderDocumentHeader(s, nil, Vehicle)
 
     for i = 1, Vehicle.MAX_VEHICLES do
         if imgui.CollapsingHeader(HEADERS[i]) then

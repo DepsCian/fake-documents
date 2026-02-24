@@ -18,7 +18,7 @@ local MilitaryUI = {}
 function MilitaryUI.render()
     local s = Military.state
 
-    Helpers.renderDocumentHeader(s, u8"Показать 'нет военного билета'")
+    Helpers.renderDocumentHeader(s, u8"Показать 'нет военного билета'", Military)
 
     Helpers.renderFieldTable(LABELS, s)
 end

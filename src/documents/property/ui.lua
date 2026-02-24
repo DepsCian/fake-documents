@@ -30,7 +30,7 @@ end
 function PropertyUI.render()
     local s = Property.state
 
-    Helpers.renderDocumentHeader(s)
+    Helpers.renderDocumentHeader(s, nil, Property)
 
     if imgui.CollapsingHeader(u8"Жилая недвижимость") then
         _renderSlots(s.residential, "res")

@@ -19,7 +19,7 @@ local VipUI = {}
 function VipUI.render()
     local s = Vip.state
 
-    Helpers.renderDocumentHeader(s)
+    Helpers.renderDocumentHeader(s, nil, Vip)
 
     imgui.Text(u8"Ваш текущий статус:")
     local current_status = ffi.string(s.statusName.value)
