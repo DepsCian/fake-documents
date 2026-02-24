@@ -4,6 +4,10 @@ local Save = require("documents/save")
 local PassportUI = require("documents/passport/ui")
 local LicensesUI = require("documents/licenses/ui")
 local MedicalUI = require("documents/medical/ui")
+local MilitaryUI = require("documents/military/ui")
+local PropertyUI = require("documents/property/ui")
+local VehicleUI = require("documents/vehicle/ui")
+local VipUI = require("documents/vip/ui")
 local u8 = Encoding.u8
 
 local UI = {}
@@ -15,6 +19,10 @@ local TABS = {
     { name = u8"Паспорт",    render = PassportUI.render },
     { name = u8"Лицензии",   render = LicensesUI.render },
     { name = u8"Мед. карта", render = MedicalUI.render },
+    { name = u8"Военный",    render = MilitaryUI.render },
+    { name = u8"Недвижимость", render = PropertyUI.render },
+    { name = u8"Транспорт",   render = VehicleUI.render },
+    { name = u8"VIP",          render = VipUI.render },
 }
 
 function UI.toggle()

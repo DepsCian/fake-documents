@@ -4,9 +4,17 @@ local State = require("documents/state")
 local Passport = require("documents/passport/init")
 local Licenses = require("documents/licenses/init")
 local Medical = require("documents/medical/init")
+local Military = require("documents/military/init")
+local Property = require("documents/property/init")
+local Vehicle = require("documents/vehicle/init")
+local Vip = require("documents/vip/init")
 local PassportBuilder = require("documents/passport/builder")
 local LicensesBuilder = require("documents/licenses/builder")
 local MedicalBuilder = require("documents/medical/builder")
+local MilitaryBuilder = require("documents/military/builder")
+local PropertyBuilder = require("documents/property/builder")
+local VehicleBuilder = require("documents/vehicle/builder")
+local VipBuilder = require("documents/vip/builder")
 
 local INIT_EVENT = "event.documents.inititalizeData"
 local CLOSE_EVENT = "onActiveViewChanged|null"
@@ -45,6 +53,22 @@ function acef.onArizonaDisplay(packet)
 
     if packet.text:find('"type":4', 1, true) or packet.text == UPDATE_PAGE:format(4) then
         _tryApply(Medical.state, MedicalBuilder)
+    end
+
+    if packet.text:find('"type":8', 1, true) or packet.text == UPDATE_PAGE:format(8) then
+        _tryApply(Military.state, MilitaryBuilder)
+    end
+
+    if packet.text:find('"type":16', 1, true) or packet.text == UPDATE_PAGE:format(16) then
+        _tryApply(Property.state, PropertyBuilder)
+    end
+
+    if packet.text:find('"type":32', 1, true) or packet.text == UPDATE_PAGE:format(32) then
+        _tryApply(Vehicle.state, VehicleBuilder)
+    end
+
+    if packet.text:find('"type":64', 1, true) or packet.text == UPDATE_PAGE:format(64) then
+        _tryApply(Vip.state, VipBuilder)
     end
 end
 
