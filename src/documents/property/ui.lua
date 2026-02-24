@@ -36,7 +36,7 @@ function PropertyUI.render()
         _renderSlots(s.residential, "res")
     end
 
-    if imgui.CollapsingHeader(u8"Комерческая недвижимость") then
+    if imgui.CollapsingHeader(u8"Коммерческая недвижимость") then
         _renderSlots(s.commercial, "com")
     end
 end

@@ -11,6 +11,7 @@ local LABELS = {
     { key = "cost",        label = u8"Стоимость" },
     { key = "milliage",    label = u8"Пробег" },
     { key = "status_text", label = u8"Статус" },
+    { key = "image_url",   label = u8"URL изображения" },
 }
 
 local HEADERS = {}
