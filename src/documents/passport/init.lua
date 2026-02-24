@@ -24,6 +24,7 @@ local FIELDS = {
 local DEFAULTS = {
     enabled  = false,
     onlyOwn  = true,
+    showEmptyState = false,
     name     = { value = u8"Олег Тиньков",       enabled = true },
     sex      = { value = u8"Мужской",             enabled = true },
     birthday = { value = u8"25.12.1967",          enabled = true },
@@ -53,6 +54,7 @@ function Passport.createState(cfg)
     local state = {
         enabled = imgui.new.bool(cfg.enabled),
         onlyOwn = imgui.new.bool(cfg.onlyOwn ~= false),
+        showEmptyState = imgui.new.bool(cfg.showEmptyState == true),
     }
     for _, field in ipairs(FIELDS) do
         state[field.key] = {
@@ -68,6 +70,7 @@ function Passport.syncToConfig(cfg)
     local s = Passport.state
     cfg.enabled = s.enabled[0]
     cfg.onlyOwn = s.onlyOwn[0]
+    cfg.showEmptyState = s.showEmptyState[0]
     for _, field in ipairs(FIELDS) do
         cfg[field.key].value   = ffi.string(s[field.key].value)
         cfg[field.key].enabled = s[field.key].enabled[0]

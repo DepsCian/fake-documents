@@ -9,6 +9,7 @@ local VEHICLE_FIELDS = {
     { key = "cost",        bufSize = 64 },
     { key = "milliage",    bufSize = 64 },
     { key = "status_text", bufSize = 128 },
+    { key = "image_url",   bufSize = 256 },
 }
 
 local MAX_VEHICLES = 5
@@ -21,6 +22,7 @@ local function _createVehicleDefaults()
         cost        = { value = u8"$15,000,000",     enabled = false },
         milliage    = { value = u8"1,337 km",        enabled = false },
         status_text = { value = u8"В гараже",        enabled = false },
+        image_url   = { value = u8"/projects/arizona-rp/assets/images/inventory/vehicles/512/402.webp", enabled = false },
     }
 end
 

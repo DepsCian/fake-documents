@@ -1,6 +1,7 @@
 local ffi = require("ffi")
 local JS = require("core/js")
 local Passport = require("documents/passport/init")
+local Encoding = require("core/encoding")
 
 local Builder = {}
 
@@ -24,23 +25,41 @@ local SELECTORS = {
     { key = "signature",    sel = BASE .. "div.documents-pasport__signature.svelte-11hrewx" },
 }
 
-local AVATAR_SEL = BASE .. "div.documents-pasport__photo-wrapper.svelte-11hrewx > img.documents-pasport__photo.svelte-11hrewx"
+local AVATAR_SEL = ".documents-pasport__photo"
 
 function Builder.build()
     local s = Passport.state
-    local code = ""
 
-    if s.avatarUrl.enabled[0] then
-        local val = ffi.string(s.avatarUrl.value)
-        code = code .. JS.setAttr(AVATAR_SEL, "src", val)
-        code = code .. JS.setStyle(AVATAR_SEL, "height:100%!important")
+    if s.showEmptyState[0] then
+        return 'window.executeEvent("event.documents.inititalizeData",`{"type":1,"not":true}`);'
     end
 
-    for _, item in ipairs(SELECTORS) do
-        local field = s[item.key]
-        if field and field.enabled[0] then
-            code = code .. JS.setText(item.sel, ffi.string(field.value))
-        end
+    local function escape(str)
+        return Encoding.u8:decode(str):gsub('"', '\\"'):gsub('\\', '\\\\'):gsub('\n', '\\n')
+    end
+
+    local json = '{"type":1,"not":false'
+    if s.name.enabled[0] then json = json .. ',"name":"' .. escape(ffi.string(s.name.value)) .. '"' end
+    if s.level.enabled[0] then json = json .. ',"level":"' .. escape(ffi.string(s.level.value)) .. '"' end
+    if s.sex.enabled[0] then json = json .. ',"sex":"' .. escape(ffi.string(s.sex.value)) .. '"' end
+    if s.zakono.enabled[0] then json = json .. ',"zakono":"' .. escape(ffi.string(s.zakono.value)) .. '"' end
+    if s.birthday.enabled[0] then json = json .. ',"birthday":"' .. escape(ffi.string(s.birthday.value)) .. '"' end
+    if s.job.enabled[0] then json = json .. ',"job":"' .. escape(ffi.string(s.job.value)) .. '"' end
+    if s.citizen.enabled[0] then json = json .. ',"citizen":"' .. escape(ffi.string(s.citizen.value)) .. '"' end
+    if s.povestka.enabled[0] then json = json .. ',"agenda":"' .. escape(ffi.string(s.povestka.value)) .. '"' end
+    if s.married.enabled[0] then json = json .. ',"married":"' .. escape(ffi.string(s.married.value)) .. '"' end
+    if s.organization.enabled[0] then json = json .. ',"charity":"' .. escape(ffi.string(s.organization.value)) .. '"' end
+    if s.rank.enabled[0] then json = json .. ',"rank":"' .. escape(ffi.string(s.rank.value)) .. '"' end
+    if s.seria.enabled[0] then json = json .. ',"seria":"' .. escape(ffi.string(s.seria.value)) .. '"' end
+    if s.number.enabled[0] then json = json .. ',"number":"' .. escape(ffi.string(s.number.value)) .. '"' end
+    if s.signature.enabled[0] then json = json .. ',"signature":"' .. escape(ffi.string(s.signature.value)) .. '"' end
+    json = json .. '}'
+
+    local code = 'window.executeEvent("event.documents.inititalizeData",`' .. json .. '`);'
+
+    if s.avatarUrl.enabled[0] then
+        local avatarUrl = ffi.string(s.avatarUrl.value)
+        code = code .. 'setTimeout(()=>{const a=document.querySelector("' .. AVATAR_SEL .. '");if(a){a.src="' .. avatarUrl .. '";a.style.height="100%";}},100);'
     end
 
     return code

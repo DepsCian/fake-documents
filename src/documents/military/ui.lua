@@ -21,6 +21,7 @@ function MilitaryUI.render()
     if imgui.Checkbox(u8"Включено", s.enabled) then Save.execute() end
     imgui.SameLine()
     if imgui.Checkbox(u8"Не менять чужие документы", s.onlyOwn) then Save.execute() end
+    if imgui.Checkbox(u8"Показать 'нет военного билета'", s.showEmptyState) then Save.execute() end
     imgui.Separator()
 
     Helpers.renderFieldTable(LABELS, s)

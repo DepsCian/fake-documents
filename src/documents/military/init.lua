@@ -14,6 +14,7 @@ local FIELDS = {
 local DEFAULTS = {
     enabled  = false,
     onlyOwn  = true,
+    showEmptyState = false,
     name             = { value = u8"Олег Тиньков",  enabled = true },
     army_online      = { value = u8"999 дней",      enabled = true },
     have_army_ticket = { value = u8"Имеется",       enabled = true },
@@ -30,6 +31,7 @@ function Military.createState(cfg)
     local state = {
         enabled = imgui.new.bool(cfg.enabled),
         onlyOwn = imgui.new.bool(cfg.onlyOwn ~= false),
+        showEmptyState = imgui.new.bool(cfg.showEmptyState == true),
     }
     for _, field in ipairs(FIELDS) do
         state[field.key] = {
@@ -45,6 +47,7 @@ function Military.syncToConfig(cfg)
     local s = Military.state
     cfg.enabled = s.enabled[0]
     cfg.onlyOwn = s.onlyOwn[0]
+    cfg.showEmptyState = s.showEmptyState[0]
     for _, field in ipairs(FIELDS) do
         cfg[field.key].value   = ffi.string(s[field.key].value)
         cfg[field.key].enabled = s[field.key].enabled[0]

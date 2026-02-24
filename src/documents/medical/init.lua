@@ -16,6 +16,7 @@ local FIELDS = {
 local DEFAULTS = {
     enabled      = false,
     onlyOwn      = true,
+    showEmptyState = false,
     examProgress = false,
     name         = { value = u8"Александр Невский",    enabled = true },
     ukrop        = { value = u8"0.0",                  enabled = true },
@@ -35,6 +36,7 @@ function Medical.createState(cfg)
     local state = {
         enabled      = imgui.new.bool(cfg.enabled),
         onlyOwn      = imgui.new.bool(cfg.onlyOwn ~= false),
+        showEmptyState = imgui.new.bool(cfg.showEmptyState == true),
         examProgress = imgui.new.bool(cfg.examProgress),
     }
     for _, field in ipairs(FIELDS) do
@@ -51,6 +53,7 @@ function Medical.syncToConfig(cfg)
     local s = Medical.state
     cfg.enabled      = s.enabled[0]
     cfg.onlyOwn      = s.onlyOwn[0]
+    cfg.showEmptyState = s.showEmptyState[0]
     cfg.examProgress = s.examProgress[0]
     for _, field in ipairs(FIELDS) do
         cfg[field.key].value   = ffi.string(s[field.key].value)
