@@ -36,7 +36,7 @@ Vip.createState(cfg.vip)
 
 function main()
     if not isSampLoaded() or not isSampfuncsLoaded() then return end
-    while not isSampAvailable() do wait(1000) end
+    while not isSampAvailable() do wait(100) end
 
     UI.initialize()
 
