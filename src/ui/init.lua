@@ -38,20 +38,26 @@ function UI.initialize()
                 imgui.Cond.FirstUseEver,
                 imgui.ImVec2(0.5, 0.5)
             )
-            imgui.SetNextWindowSize(imgui.ImVec2(600, 400), imgui.Cond.FirstUseEver)
+            imgui.SetNextWindowSize(imgui.ImVec2(700, 550), imgui.Cond.FirstUseEver)
 
             if imgui.Begin(u8"Fake Documents by DepsCian", _window) then
-                if imgui.BeginTabBar("##fdoc_tabs") then
-                    for _, tab in ipairs(TABS) do
-                        if imgui.BeginTabItem(tab.name) then
-                            tab.render()
-                            imgui.EndTabItem()
+                local windowHeight = imgui.GetWindowHeight()
+                
+                if imgui.BeginChild("##content", imgui.ImVec2(0, windowHeight - 70), false) then
+                    if imgui.BeginTabBar("##fdoc_tabs") then
+                        for _, tab in ipairs(TABS) do
+                            if imgui.BeginTabItem(tab.name) then
+                                tab.render()
+                                imgui.EndTabItem()
+                            end
                         end
+                        imgui.EndTabBar()
                     end
-                    imgui.EndTabBar()
                 end
+                imgui.EndChild()
 
-                if imgui.Button(u8"Сохранить настройки") then
+                imgui.Separator()
+                if imgui.Button(u8"Сохранить настройки", imgui.ImVec2(-1, 0)) then
                     Save.executeWithNotify()
                 end
             end
