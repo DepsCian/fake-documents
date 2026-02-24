@@ -23,12 +23,19 @@ end
 
 local function _readJson(path)
     local file = io.open(path, "r")
-    if not file then return nil end
+    if not file then return true, nil end
     local content = file:read("*a")
     file:close()
+    
+    if content:gsub("%s+", "") == "" then return true, nil end
+    
     local ok, result = pcall(decodeJson, content)
-    if not ok or type(result) ~= "table" then return nil end
-    return result
+    if not ok then
+        print("[Fake Documents] ERROR: Failed to parse JSON config! Check syntax. Defaulting to safe values.")
+        return false, nil
+    end
+    if type(result) ~= "table" then return false, nil end
+    return true, result
 end
 
 local function _writeJson(path, data)
@@ -46,12 +53,19 @@ end
 
 function Config.load(defaults)
     _ensureDirectory()
-    local loaded = _readJson(_configPath)
+    local success, loaded = _readJson(_configPath)
+    
+    if not success then
+        _data = defaults
+        return _data
+    end
+    
     if not loaded then
         _data = defaults
         _writeJson(_configPath, _data)
         return _data
     end
+    
     _data = _deepMerge(loaded, defaults)
     return _data
 end
