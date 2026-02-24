@@ -23,6 +23,9 @@ function Helpers.renderRow(label, id, setting, disabled)
     imgui.PushItemWidth(imgui.GetColumnWidth() - 10)
     if disabled then imgui.BeginDisabled() end
     imgui.InputText("##" .. id, setting.value, ffi.sizeof(setting.value))
+    if imgui.IsItemDeactivatedAfterEdit() then
+        Save.execute()
+    end
     if disabled then imgui.EndDisabled() end
     imgui.PopItemWidth()
     imgui.NextColumn()
