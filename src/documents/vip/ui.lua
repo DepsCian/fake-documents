@@ -29,9 +29,11 @@ function VipUI.render()
     imgui.Separator()
 
     imgui.Text(u8"Ваш текущий статус:")
+    local current_status = ffi.string(s.statusName.value)
     for _, vip in ipairs(VIP_TYPES) do
-        local is_selected = ffi.string(s.statusName.value) == ffi.string(vip.value)
-        if imgui.Checkbox(u8(vip.name .. "##viptype"), imgui.new.bool(is_selected)) then
+        local is_selected = current_status == ffi.string(vip.value)
+        local checkbox_state = imgui.new.bool(is_selected)
+        if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
             if not is_selected then
                 ffi.copy(s.statusName.value, vip.value)
                 Save.execute()
@@ -58,10 +60,9 @@ function VipUI.render()
 
     imgui.Separator()
     imgui.Text(u8"VIP статусы:")
-    local vip_names = {"ADD VIP", "Premium VIP", "Titan VIP", "Diamond VIP"}
     for i = 1, 4 do
         local st = s.vipStatuses[i]
-        if imgui.Checkbox(u8(vip_names[i]), st.enabled) then Save.execute() end
+        if imgui.Checkbox(u8(VIP_TYPES[i].name), st.enabled) then Save.execute() end
         if st.enabled[0] then
             imgui.InputText(u8("##vipdate" .. i), st.date.value, 128)
         end

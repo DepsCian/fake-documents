@@ -30,7 +30,6 @@ function Builder.build()
         code = code .. 'setTimeout(()=>{const a=document.querySelector("' .. PHOTO_SEL .. '");if(a){a.src="' .. avatarUrl .. '";a.style.height="100%";}},100);'
     end
 
-
     return code
 end
 
