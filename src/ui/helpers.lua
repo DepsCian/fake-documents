@@ -17,18 +17,24 @@ function Helpers.renderDocumentHeader(state, emptyStateLabel)
     imgui.Separator()
 end
 
-function Helpers.renderRow(label, id, setting)
+function Helpers.renderRow(label, id, setting, disabled)
     imgui.Text(label)
     imgui.NextColumn()
     imgui.PushItemWidth(imgui.GetColumnWidth() - 10)
+    if disabled then imgui.BeginDisabled() end
     imgui.InputText("##" .. id, setting.value, ffi.sizeof(setting.value))
+    if disabled then imgui.EndDisabled() end
     imgui.PopItemWidth()
     imgui.NextColumn()
+    if disabled then imgui.BeginDisabled() end
     imgui.Checkbox("##" .. id .. "_enabled", setting.enabled)
+    if disabled then imgui.EndDisabled() end
     imgui.NextColumn()
 end
 
 function Helpers.renderFieldTable(labels, state)
+    local disabled = state.enabled and not state.enabled[0]
+    
     imgui.Columns(3)
     imgui.Text(u8"Параметр")
     imgui.NextColumn()
@@ -39,7 +45,7 @@ function Helpers.renderFieldTable(labels, state)
     imgui.Separator()
 
     for _, item in ipairs(labels) do
-        Helpers.renderRow(item.label, item.key, state[item.key])
+        Helpers.renderRow(item.label, item.key, state[item.key], disabled)
     end
 
     imgui.Columns(1)
