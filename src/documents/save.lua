@@ -8,17 +8,23 @@ local Vehicle = require("documents/vehicle/init")
 local Vip = require("documents/vip/init")
 local Message = require("core/message")
 
+local REGISTRY = {
+    { module = Passport, cfgKey = "pass" },
+    { module = Licenses, cfgKey = "licenses" },
+    { module = Medical, cfgKey = "medical" },
+    { module = Military, cfgKey = "military" },
+    { module = Property, cfgKey = "property" },
+    { module = Vehicle, cfgKey = "vehicle" },
+    { module = Vip, cfgKey = "vip" },
+}
+
 local Save = {}
 
 function Save.execute()
     local cfg = Config.data()
-    Passport.syncToConfig(cfg.pass)
-    Licenses.syncToConfig(cfg.licenses)
-    Medical.syncToConfig(cfg.medical)
-    Military.syncToConfig(cfg.military)
-    Property.syncToConfig(cfg.property)
-    Vehicle.syncToConfig(cfg.vehicle)
-    Vip.syncToConfig(cfg.vip)
+    for _, entry in ipairs(REGISTRY) do
+        entry.module.syncToConfig(cfg[entry.cfgKey])
+    end
     Config.write()
 end
 
