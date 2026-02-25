@@ -15,7 +15,7 @@ local UI = {}
 local _window = imgui.new.bool(false)
 local _resX, _resY = getScreenResolution()
 
-local FORGE_URL = "https://forge.depscian.tech/"
+local FORGE_URL = "https://depscian.tech/forge?utm_source=fake-documents&utm_medium=moonloader&utm_campaign=in-game-script"
 local FORGE_TITLE = u8"Arizona Forge"
 local FORGE_DESC = u8"3D конфигуратор сетов Arizona RP"
 local FORGE_LINK_TEXT = u8"Открыть Arizona Forge"
