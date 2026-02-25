@@ -15,6 +15,13 @@ local UI = {}
 local _window = imgui.new.bool(false)
 local _resX, _resY = getScreenResolution()
 
+local FORGE_URL = "https://forge.depscian.tech/"
+local FORGE_TITLE = u8"Arizona Forge"
+local FORGE_DESC = u8"3D конфигуратор сетов Arizona RP"
+local FORGE_LINK_TEXT = u8"Открыть Arizona Forge"
+local FORGE_COLOR = imgui.ImVec4(0.33, 0.67, 0.82, 1.0)
+local FORGE_COLOR_HOVER = imgui.ImVec4(0.45, 0.78, 0.93, 1.0)
+
 local TABS = {
     { name = u8"Паспорт",    render = PassportUI.render },
     { name = u8"Лицензии",   render = LicensesUI.render },
@@ -41,9 +48,9 @@ function UI.initialize()
             imgui.SetNextWindowSize(imgui.ImVec2(700, 550), imgui.Cond.FirstUseEver)
 
             if imgui.Begin(u8"Fake Documents by DepsCian", _window) then
-                local windowHeight = imgui.GetWindowHeight()
-                
-                if imgui.BeginChild("##content", imgui.ImVec2(0, windowHeight - 70), false) then
+                local contentHeight = imgui.GetContentRegionAvail().y - 75
+
+                if imgui.BeginChild("##content", imgui.ImVec2(0, contentHeight), false) then
                     if imgui.BeginTabBar("##fdoc_tabs") then
                         for _, tab in ipairs(TABS) do
                             if imgui.BeginTabItem(tab.name) then
@@ -60,6 +67,33 @@ function UI.initialize()
                 if imgui.Button(u8"Сохранить настройки", imgui.ImVec2(-1, 0)) then
                     Save.executeWithNotify()
                 end
+
+                imgui.Spacing()
+                imgui.Separator()
+
+                local availWidth = imgui.GetContentRegionAvail().x
+                imgui.PushStyleColor(imgui.Col.Text, FORGE_COLOR)
+                local titleSize = imgui.CalcTextSize(FORGE_TITLE)
+                imgui.SetCursorPosX((availWidth - titleSize.x) / 2 + imgui.GetCursorPosX())
+                imgui.Text(FORGE_TITLE)
+                imgui.PopStyleColor()
+
+                imgui.PushStyleColor(imgui.Col.Text, imgui.ImVec4(0.7, 0.7, 0.7, 1.0))
+                local descSize = imgui.CalcTextSize(FORGE_DESC)
+                imgui.SetCursorPosX((availWidth - descSize.x) / 2 + imgui.GetCursorPosX())
+                imgui.Text(FORGE_DESC)
+                imgui.PopStyleColor()
+
+                imgui.Spacing()
+                imgui.PushStyleColor(imgui.Col.Button, FORGE_COLOR)
+                imgui.PushStyleColor(imgui.Col.ButtonHovered, FORGE_COLOR_HOVER)
+                imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.25, 0.55, 0.70, 1.0))
+                local buttonWidth = 250
+                imgui.SetCursorPosX((availWidth - buttonWidth) / 2 + imgui.GetCursorPosX())
+                if imgui.Button(FORGE_LINK_TEXT, imgui.ImVec2(buttonWidth, 30)) then
+                    os.execute('start "" "' .. FORGE_URL .. '"')
+                end
+                imgui.PopStyleColor(3)
             end
             imgui.End()
         end
