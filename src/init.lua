@@ -1,6 +1,6 @@
 script_name("Fake Documents")
 script_author("DepsCian")
-script_version("1.2")
+script_version("1.5")
 
 local Config = require("core/config")
 local Passport = require("documents/passport/init")
