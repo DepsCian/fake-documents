@@ -36,6 +36,18 @@ function UI.toggle()
     _window[0] = not _window[0]
 end
 
+local FORGE_BUTTON_HEIGHT = 30
+local _windowFlags = imgui.WindowFlags.NoScrollbar + imgui.WindowFlags.NoScrollWithMouse
+
+local function _calcFooterHeight()
+    local spacing = imgui.GetStyle().ItemSpacing.y
+    local saveButton = imgui.GetFrameHeightWithSpacing()
+    local textLines = 2 * imgui.GetTextLineHeightWithSpacing()
+    local separators = 2 * spacing
+    local spacings = 2 * spacing
+    return saveButton + textLines + separators + spacings + FORGE_BUTTON_HEIGHT
+end
+
 function UI.initialize()
     imgui.OnFrame(
         function() return _window[0] end,
@@ -47,21 +59,22 @@ function UI.initialize()
             )
             imgui.SetNextWindowSize(imgui.ImVec2(700, 550), imgui.Cond.FirstUseEver)
 
-            if imgui.Begin(u8"Fake Documents by DepsCian", _window) then
-                local contentHeight = imgui.GetContentRegionAvail().y - 75
+            if imgui.Begin(u8"Fake Documents by DepsCian", _window, _windowFlags) then
+                local footerH = _calcFooterHeight()
 
-                if imgui.BeginChild("##content", imgui.ImVec2(0, contentHeight), false) then
-                    if imgui.BeginTabBar("##fdoc_tabs") then
-                        for _, tab in ipairs(TABS) do
-                            if imgui.BeginTabItem(tab.name) then
+                if imgui.BeginTabBar("##fdoc_tabs") then
+                    for i, tab in ipairs(TABS) do
+                        if imgui.BeginTabItem(tab.name) then
+                            local childId = "##tab_scroll_" .. tostring(i)
+                            if imgui.BeginChild(childId, imgui.ImVec2(0, -footerH), false) then
                                 tab.render()
-                                imgui.EndTabItem()
                             end
+                            imgui.EndChild()
+                            imgui.EndTabItem()
                         end
-                        imgui.EndTabBar()
                     end
+                    imgui.EndTabBar()
                 end
-                imgui.EndChild()
 
                 imgui.Separator()
                 if imgui.Button(u8"Сохранить настройки", imgui.ImVec2(-1, 0)) then
@@ -90,7 +103,7 @@ function UI.initialize()
                 imgui.PushStyleColor(imgui.Col.ButtonActive, imgui.ImVec4(0.25, 0.55, 0.70, 1.0))
                 local buttonWidth = 250
                 imgui.SetCursorPosX((availWidth - buttonWidth) / 2 + imgui.GetCursorPosX())
-                if imgui.Button(FORGE_LINK_TEXT, imgui.ImVec2(buttonWidth, 30)) then
+                if imgui.Button(FORGE_LINK_TEXT, imgui.ImVec2(buttonWidth, FORGE_BUTTON_HEIGHT)) then
                     os.execute('start "" "' .. FORGE_URL .. '"')
                 end
                 imgui.PopStyleColor(3)
