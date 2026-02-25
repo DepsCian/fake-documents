@@ -19,50 +19,82 @@ local INIT_EVENT = "event.documents.inititalizeData"
 local CLOSE_EVENT = "onActiveViewChanged|null"
 local UPDATE_PAGE = "window.executeEvent('event.documents.updatePage', `[%d]`);"
 
-local DOCUMENT_TYPES = {
-    { type = 1,  module = Passport,  builder = PassportBuilder },
-    { type = 2,  module = Licenses,  builder = LicensesBuilder },
-    { type = 4,  module = Medical,   builder = MedicalBuilder },
-    { type = 8,  module = Military,  builder = MilitaryBuilder },
-    { type = 16, module = Property,  builder = PropertyBuilder },
-    { type = 32, module = Vehicle,   builder = VehicleBuilder },
-    { type = 64, module = Vip,       builder = VipBuilder },
-}
+local DOCUMENT_TYPES = { {
+	type = 1,
+	module = Passport,
+	builder = PassportBuilder,
+}, {
+	type = 2,
+	module = Licenses,
+	builder = LicensesBuilder,
+}, {
+	type = 4,
+	module = Medical,
+	builder = MedicalBuilder,
+}, {
+	type = 8,
+	module = Military,
+	builder = MilitaryBuilder,
+}, {
+	type = 16,
+	module = Property,
+	builder = PropertyBuilder,
+}, {
+	type = 32,
+	module = Vehicle,
+	builder = VehicleBuilder,
+}, {
+	type = 64,
+	module = Vip,
+	builder = VipBuilder,
+} }
 
 local function _getPlayerNickname()
-    local _, playerId = sampGetPlayerIdByCharHandle(PLAYER_PED)
-    return sampGetPlayerNickname(playerId)
+	local _, playerId = sampGetPlayerIdByCharHandle(PLAYER_PED)
+	return sampGetPlayerNickname(playerId)
 end
 
 local function _shouldApply(docState)
-    if not docState.enabled[0] then return false end
-    if docState.onlyOwn[0] and State.isViewingOtherPlayer then return false end
-    return true
+	if not docState.enabled[0] then
+		return false
+	end
+	if docState.onlyOwn[0] and State.isViewingOtherPlayer then
+		return false
+	end
+	return true
 end
 
 local function _tryApply(docState, builder)
-    if _shouldApply(docState) then
-        acef.eval(builder.build())
-    end
+	if _shouldApply(docState) then
+		acef.eval(builder.build())
+	end
 end
 
 function acef.onArizonaDisplay(packet)
-    if packet.text:find(INIT_EVENT, 1, true) and not packet.text:find(_getPlayerNickname(), 1, true) then
-        State.isViewingOtherPlayer = true
-    end
+	if packet.text:find(INIT_EVENT, 1, true) and not packet.text:find(
+		_getPlayerNickname(),
+		1,
+		true
+	) then
+		State.isViewingOtherPlayer = true
+	end
 
-    for _, doc in ipairs(DOCUMENT_TYPES) do
-        if packet.text:find('"type":' .. doc.type, 1, true) or packet.text == UPDATE_PAGE:format(doc.type) then
-            _tryApply(doc.module.state, doc.builder)
-            break
-        end
-    end
+	for _, doc in ipairs(DOCUMENT_TYPES) do
+		if packet.text:find(
+			'"type":' .. doc.type,
+			1,
+			true
+		) or packet.text == UPDATE_PAGE:format(doc.type) then
+			_tryApply(doc.module.state, doc.builder)
+			break
+		end
+	end
 end
 
 function acef.onArizonaSend(packet)
-    if packet.text:find(CLOSE_EVENT, 1, true) then
-        State.isViewingOtherPlayer = false
-    end
+	if packet.text:find(CLOSE_EVENT, 1, true) then
+		State.isViewingOtherPlayer = false
+	end
 end
 
 return {}

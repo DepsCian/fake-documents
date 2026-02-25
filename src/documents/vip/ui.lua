@@ -7,61 +7,68 @@ local Helpers = require("ui/helpers")
 local VIP_TYPES = require("documents/vip/constants")
 local u8 = Encoding.u8
 
-local LABELS = {
-    { key = "statusTime", label = u8"Срок действия" },
-    { key = "addVipDays", label = u8"ADD VIP (дни)" },
-}
-
-
+local LABELS = { {
+	key = "statusTime",
+	label = u8"Срок действия",
+}, {
+	key = "addVipDays",
+	label = u8"ADD VIP (дни)",
+} }
 
 local VipUI = {}
 
 function VipUI.render()
-    local s = Vip.state
+	local s = Vip.state
 
-    Helpers.renderDocumentHeader(s, nil, Vip)
+	Helpers.renderDocumentHeader(s, nil, Vip)
 
-    imgui.Text(u8"Ваш текущий статус:")
-    local current_status = ffi.string(s.statusName.value)
-    for _, vip in ipairs(VIP_TYPES) do
-        local is_selected = current_status == vip.name
-        local checkbox_state = imgui.new.bool(is_selected)
-        if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
-            if not is_selected then
-                ffi.copy(s.statusName.value, vip.display)
-                Save.execute()
-            end
-        end
-    end
+	imgui.Text(u8"Ваш текущий статус:")
+	local current_status = ffi.string(s.statusName.value)
+	for _, vip in ipairs(VIP_TYPES) do
+		local is_selected = current_status == vip.name
+		local checkbox_state = imgui.new.bool(is_selected)
+		if imgui.Checkbox(u8(vip.name .. "##viptype"), checkbox_state) then
+			if not is_selected then
+				ffi.copy(s.statusName.value, vip.display)
+				Save.execute()
+			end
+		end
+	end
 
-    imgui.Separator()
+	imgui.Separator()
 
-    Helpers.renderFieldTable(LABELS, s)
+	Helpers.renderFieldTable(LABELS, s)
 
-    imgui.Separator()
-    if imgui.CollapsingHeader(u8"Premium уровни") then
-        for i = 1, 10 do
-            local lvl = s.premiumLevels[i]
-            if imgui.Checkbox(u8("Уровень " .. i), lvl.enabled) then Save.execute() end
-            imgui.SameLine()
-            if imgui.Checkbox(u8("Отмечен##mark" .. i), lvl.mark) then Save.execute() end
-            if lvl.enabled[0] then
-                imgui.InputText(u8("##text" .. i), lvl.text.value, 256)
-                imgui.InputText(u8("##desc" .. i), lvl.desc.value, 512)
-            end
-        end
-    end
+	imgui.Separator()
+	if imgui.CollapsingHeader(u8"Premium уровни") then
+		for i = 1, 10 do
+			local lvl = s.premiumLevels[i]
+			if imgui.Checkbox(u8("Уровень " .. i), lvl.enabled) then
+				Save.execute()
+			end
+			imgui.SameLine()
+			if imgui.Checkbox(u8("Отмечен##mark" .. i), lvl.mark) then
+				Save.execute()
+			end
+			if lvl.enabled[0] then
+				imgui.InputText(u8("##text" .. i), lvl.text.value, 256)
+				imgui.InputText(u8("##desc" .. i), lvl.desc.value, 512)
+			end
+		end
+	end
 
-    imgui.Separator()
-    if imgui.CollapsingHeader(u8"VIP статусы") then
-        for i = 1, 4 do
-            local st = s.vipStatuses[i]
-            if imgui.Checkbox(u8(VIP_TYPES[i].name), st.enabled) then Save.execute() end
-            if st.enabled[0] then
-                imgui.InputText(u8("##vipdate" .. i), st.date.value, 128)
-            end
-        end
-    end
+	imgui.Separator()
+	if imgui.CollapsingHeader(u8"VIP статусы") then
+		for i = 1, 4 do
+			local st = s.vipStatuses[i]
+			if imgui.Checkbox(u8(VIP_TYPES[i].name), st.enabled) then
+				Save.execute()
+			end
+			if st.enabled[0] then
+				imgui.InputText(u8("##vipdate" .. i), st.date.value, 128)
+			end
+		end
+	end
 end
 
 return VipUI

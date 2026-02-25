@@ -1,5 +1,3 @@
-local State = {
-    isViewingOtherPlayer = false
-}
+local State = { isViewingOtherPlayer = false }
 
 return State
