@@ -39,23 +39,17 @@ function Helpers.renderRow(label, id, setting, disabled)
 	imgui.NextColumn()
 	imgui.PushItemWidth(imgui.GetColumnWidth() - 10)
 	if disabled then
-		imgui.BeginDisabled()
+		imgui.PushStyleVar(imgui.StyleVar.Alpha, 0.5)
 	end
 	imgui.InputText("##" .. id, setting.value, ffi.sizeof(setting.value))
-	if imgui.IsItemDeactivatedAfterEdit() then
+	if not disabled and imgui.IsItemDeactivatedAfterEdit() then
 		Save.execute()
-	end
-	if disabled then
-		imgui.EndDisabled()
 	end
 	imgui.PopItemWidth()
 	imgui.NextColumn()
-	if disabled then
-		imgui.BeginDisabled()
-	end
 	imgui.Checkbox("##" .. id .. "_enabled", setting.enabled)
 	if disabled then
-		imgui.EndDisabled()
+		imgui.PopStyleVar()
 	end
 	imgui.NextColumn()
 end
